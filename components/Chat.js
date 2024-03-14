@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-const Screen2 = ({ route, navigation }) => {
-  const { name } = route.params;
+const Chat = ({ route, navigation }) => {
+  const { name, background } = route.params;
 
   useEffect(() => {
     navigation.setOptions({ title: name });
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Hello Screen2!</Text>
+    <View style={[styles.container, { backgroundColor: background }]}>
+      <Text style={styles.text}>Hello, Welcome to Chat!</Text>
     </View>
   );
 };
@@ -20,7 +20,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  text: {
+    fontSize: 16,
+    color: 'white',
   },
 });
 
-export default Screen2;
+export default Chat;
