@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 
 const Start = ({ navigation }) => {
@@ -60,6 +62,9 @@ const Start = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
+      {Platform.OS === 'ios' ? (
+        <KeyboardAvoidingView behavior='padding' />
+      ) : null}
     </View>
   );
 };
@@ -87,7 +92,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 30,
     width: '88%',
-    height: '44%',
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: '44%',
     alignItems: 'center',
     justifyContent: 'center',
   },

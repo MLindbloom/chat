@@ -1,8 +1,53 @@
-import { useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 
 const Chat = ({ route, navigation }) => {
   const { name, background } = route.params;
+  const [messages, setMessages] = useState([]);
+
+  const onSend = (newMessages) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, newMessages)
+    );
+  };
+
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#000',
+          },
+          left: {
+            backgroundColor: '#FFF',
+          },
+        }}
+      />
+    );
+  };
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello developer',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+      {
+        _id: 2,
+        text: 'This is a system message',
+        createdAt: new Date(),
+        system: true,
+      },
+    ]);
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({ title: name });
@@ -10,18 +55,25 @@ const Chat = ({ route, navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
-      <Text style={styles.text}>Hello, Welcome to Chat!</Text>
+      <GiftedChat
+        messages={messages}
+        renderBubble={renderBubble}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
+      {Platform.OS === 'android' ? (
+        <KeyboardAvoidingView behavior='height' />
+      ) : null}
     </View>
   );
+  r;
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
   },
   text: {
     fontSize: 16,
