@@ -8,12 +8,30 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 
 const Start = ({ navigation }) => {
+  const auth = getAuth();
   const [name, setName] = useState('');
   const [background, setBackground] = useState('');
   const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
+
+  const signInUser = () => {
+    signInAnonymously(auth)
+      .then((result) => {
+        navigation.navigate('Chat', {
+          name: name,
+          background: background,
+          userID: result.user.uid,
+        });
+        Alert.alert('Signed in Successfully!');
+      })
+      .catch((error) => {
+        Alert.alert('Unable to sign it, please try again later.');
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -26,6 +44,8 @@ const Start = ({ navigation }) => {
         <View style={styles.box}>
           {/* Input Username \*/}
           <TextInput
+            accessibilityLabel='Username input'
+            accessibilityRole='text'
             style={styles.textInput}
             value={name}
             onChangeText={setName}
@@ -38,6 +58,9 @@ const Start = ({ navigation }) => {
           <View style={styles.colorButtonsBox}>
             {colors.map((color, index) => (
               <TouchableOpacity
+                accessibilityLabel='Color Button'
+                accessibilityHint='Lets you choose a backgroundcolor for your chat.'
+                accessibilityRole='button'
                 key={index}
                 style={[
                   styles.colorButton,
@@ -50,13 +73,10 @@ const Start = ({ navigation }) => {
           </View>
           {/* Start Chat \*/}
           <TouchableOpacity
+            accessibilityLabel='Start Chatting'
+            accessibilityRole='button'
             style={styles.button}
-            onPress={() =>
-              navigation.navigate('Chat', {
-                name: name,
-                background: background,
-              })
-            }
+            onPress={signInUser}
           >
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>
