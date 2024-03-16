@@ -9,6 +9,7 @@ import {
   query,
 } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomActions from './CustomActions';
 
 const Chat = ({ route, navigation, db, isConnected }) => {
   const { name, background } = route.params;
@@ -38,6 +39,10 @@ const Chat = ({ route, navigation, db, isConnected }) => {
   const renderInputToolbar = (props) => {
     if (isConnected) return <InputToolbar {...props} />;
     else return null;
+  };
+
+  const renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
   };
 
   useEffect(() => {
@@ -89,7 +94,8 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       <GiftedChat
         messages={messages}
         renderBubble={renderBubble}
-        render={renderInputToolbar}
+        renderInputToolbar={renderInputToolbar}
+        renderCustomActions={renderCustomActions}
         onSend={(messages) => onSend(messages)}
         user={{
           _id: route.params.userID,
