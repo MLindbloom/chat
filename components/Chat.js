@@ -89,9 +89,10 @@ const Chat = ({ route, navigation, db, isConnected }) => {
       <GiftedChat
         messages={messages}
         renderBubble={renderBubble}
+        render={renderInputToolbar}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: route.params,
+          _id: route.params.userID,
           name,
         }}
       />
