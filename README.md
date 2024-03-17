@@ -83,4 +83,8 @@ To set up the app for development, follow these steps:
 
 8. **Start Developing:** You're all set to start developing your React Native chat app! Make changes to the code, and the Expo development server will hot reload the app for you.
 
+![Chat_App_main](https://github.com/MLindbloom/chat/assets/106117475/7f702a12-4570-40e6-b8eb-94197e4e8bd1)
+
+
+
 ---
