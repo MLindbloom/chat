@@ -18,12 +18,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomActions from './CustomActions';
 import MapView from 'react-native-maps';
-import { Audio } from 'expo-av';
 
 const Chat = ({ route, navigation, db, isConnected, storage }) => {
   const { name, background } = route.params;
   const [messages, setMessages] = useState([]);
-  let soundObject = null;
+  // let soundObject = null;
 
   const onSend = (newMessages) => {
     addDoc(collection(db, 'messages'), newMessages[0]);
@@ -74,6 +73,10 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     return null;
   };
 
+  useEffect(() => {
+    navigation.setOptions({ title: name });
+  }, []);
+
   let unsubMessages;
   useEffect(() => {
     if (isConnected === true) {
@@ -98,7 +101,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     // Clean up code
     return () => {
       if (unsubMessages) unsubMessages();
-      if (soundObject) soundObject.unloadAsync();
+      // if (soundObject) soundObject.unloadAsync();
     };
   }, [isConnected]);
 
@@ -115,35 +118,31 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     }
   };
 
-  const renderAudioBubble = (props) => {
-    return (
-      <View {...props}>
-        <TouchableOpacity
-          style={{ backgroundColor: '#FF0', borderRadius: 10, margin: 5 }}
-          onPress={async () => {
-            try {
-              if (soundObject) soundObject.unloadAsync();
-              const { sound } = await Audio.Sound.createAsync({
-                uri: props.currentMessage.audio,
-              });
-              soundObject = sound;
-              await sound.playAsync();
-            } catch (error) {
-              console.error('Error playing audio:', error);
-            }
-          }}
-        >
-          <Text style={{ textAlign: 'center', color: 'black', padding: 5 }}>
-            Play Sound
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  useEffect(() => {
-    navigation.setOptions({ title: name });
-  }, []);
+  // const renderAudioBubble = (props) => {
+  //   return (
+  //     <View {...props}>
+  //       <TouchableOpacity
+  //         style={{ backgroundColor: '#FF0', borderRadius: 10, margin: 5 }}
+  //         onPress={async () => {
+  //           try {
+  //             if (soundObject) soundObject.unloadAsync();
+  //             const { sound } = await Audio.Sound.createAsync({
+  //               uri: props.currentMessage.audio,
+  //             });
+  //             soundObject = sound;
+  //             await sound.playAsync();
+  //           } catch (error) {
+  //             console.error('Error playing audio:', error);
+  //           }
+  //         }}
+  //       >
+  //         <Text style={{ textAlign: 'center', color: 'black', padding: 5 }}>
+  //           Play Sound
+  //         </Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
 
   return (
     <View style={[styles.container, { backgroundColor: background }]}>
@@ -153,7 +152,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         renderInputToolbar={renderInputToolbar}
         renderActions={renderCustomActions}
         renderCustomView={renderCustomView}
-        renderMessageAudio={renderAudioBubble}
+        // renderMessageAudio={renderAudioBubble}
         onSend={(messages) => onSend(messages)}
         user={{
           _id: route.params.userID,
